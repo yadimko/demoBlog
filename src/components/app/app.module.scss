@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+
+}
+
+body {
+  padding: 0;
+  margin: 0;
+
+}
+
+.blog-wrapper{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px 1fr;
+  background-color: rgb(231, 231, 231);
+}
+
+.articles-wrapper{
+  display: grid;
+  grid-template-columns: 941px;
+  grid-template-rows: 1fr;
+  margin: 10px auto 10px auto;
+}
