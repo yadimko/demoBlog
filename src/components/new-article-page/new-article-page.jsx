@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import _ from 'lodash/fp';
 import { useForm } from 'react-hook-form';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/createArticle/actions';
 import classes from './new-article-page.module.scss';
 
-const NewArticle = () => {
-  const { register, handleSubmit, watch, errors } = useForm();
+const NewArticle = ({token, signSuccess, articleAdd, CREATE_ARTICLE}) => {
+  const { register, handleSubmit, watch, errors } = useForm({});
   const [article, setArticle] = useState({
     article: {
       title: '',
@@ -15,8 +18,8 @@ const NewArticle = () => {
   });
   const [tag, setTag] = useState('')
 
-  const onSubmit = (e) => {
-    console.log(article);
+  const onSubmit = (el) => {
+    CREATE_ARTICLE(article, token)
   };
 
   const onChangeTitleField = (el) => {
@@ -41,7 +44,7 @@ const NewArticle = () => {
     setArticle({
       article: {
         ...article.article,
-        text: el.target.value,
+        body: el.target.value,
       },
     });
   };
@@ -72,7 +75,10 @@ const NewArticle = () => {
 
   }
 
-  console.log(article);
+  if (!signSuccess){
+    return <Redirect to='/' />
+  }
+
 
   const tagList = article.article.tagList.length > 0 ?
     <>
@@ -123,6 +129,7 @@ const NewArticle = () => {
             placeholder="Title"
             value={article.article.title}
             onChange={onChangeTitleField}
+            required
             name="title"
             ref={register({
               required: true,
@@ -143,6 +150,7 @@ const NewArticle = () => {
             value={article.article.description}
             onChange={onChangeDescField}
             name="desc"
+            required
             ref={register({
               required: true,
             })}
@@ -160,6 +168,7 @@ const NewArticle = () => {
             value={article.article.text}
             onChange={onChangeTextField}
             name="text"
+            required
             ref={register({
               required: true,
             })}
@@ -178,4 +187,11 @@ const NewArticle = () => {
   );
 };
 
-export default NewArticle;
+const mapStateToProps = (state) => {
+  return {
+    articleAdd: state.createArticleReducer.articleAdd,
+    token: state.userSignControlReducer.user.token,
+    signSuccess: state.userSignControlReducer.signSuccess
+  };
+};
+export default connect(mapStateToProps, actions)(NewArticle);

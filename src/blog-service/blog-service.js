@@ -70,4 +70,57 @@ export default class BlogService {
       console.log(err)
     }
   }
+
+  async createArticle(body, token) {
+    try {
+      const response = await fetch(`${_rootUrl}articles`, {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        }),
+        body
+      });
+      const data = await response.json();
+      return data;
+    }
+    catch (err){
+      console.log(err)
+    }
+  }
+
+  async editArticle(body, slug, token) {
+    try {
+      const response = await fetch(`${_rootUrl}articles/${slug}`, {
+        method: 'PUT',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        }),
+        body
+      });
+      const data = await response.json();
+      return data;
+    }
+    catch (err){
+      console.log(err)
+    }
+  }
+
+  async deleteArticle(slug, token) {
+    try {
+      const response = await fetch(`${_rootUrl}articles/${slug}`, {
+        method: 'DELETE',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        }),
+      });
+      const data = await response.json();
+      return data;
+    }
+    catch (err){
+      console.log(err)
+    }
+  }
 }

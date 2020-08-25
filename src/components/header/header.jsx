@@ -10,14 +10,14 @@ const Header = ({signSuccess, user, LOG_OUT}) => {
   const headerBlock = signSuccess ?
     <>
       <button type="button" className={classes['header-create-article__button']}>
-        <Link to="/">Create article</Link>
+        <Link to="/new-article">Create article</Link>
       </button>
       <div className={classes['header-user-info']}>
         <span className={classes['header-username']}>
           {user.username}
         </span>
         <span className={classes['header-avatar']}>
-          <Link to='profile'>
+          <Link to='/profile'>
             {userAvatar}
           </Link>
         </span>

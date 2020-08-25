@@ -152,7 +152,7 @@ const SignUp = ({errorsFromAPI, signSuccess, SIGN_UP_USER}) => {
           <input type="checkbox" checked={checkbox} onChange={() => {setCheckbox(!checkbox)}}/>
           <span className="checkmark">I agree to the processing of my personal information</span>
         </label>
-        <button type="submit" onClick={onSubmit}>
+        <button type="submit" className={classes['sign-up--button']} onClick={onSubmit}>
           <span>Create</span>
         </button>
         <div className={classes['form-footer']}>

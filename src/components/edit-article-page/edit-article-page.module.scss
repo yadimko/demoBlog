@@ -1,10 +1,10 @@
 .edit-article__wrapper {
   display: flex;
   flex-direction: column;
-  margin: 60px auto 60px auto;
+  margin: 10px auto 10px auto;
   padding: 48px 32px 48px 32px;
   width: 938px;
-  height: 701px;
+  height: auto;
   background-color: #ffffff;
 }
 
@@ -15,7 +15,7 @@
   font-size: 20px;
   line-height: 28px;
   text-align: center;
-  color: #262626;
+  color: #000000;
   margin-bottom: 20px;
 }
 
@@ -30,7 +30,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   height: 40px;
-  color: #d9d9d9;
+  color: #000000;
   padding-left: 12px;
   outline: none;
 }
@@ -45,7 +45,7 @@
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
   border-radius: 4px;
-  color: #d9d9d9;
+  color: #000000;
   padding-left: 12px;
   outline: none;
 }
@@ -60,7 +60,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   height: 40px;
-  color: #d9d9d9;
+  color: #000000;
   padding-left: 12px;
   width: 300px;
   margin-right: 20px;
@@ -82,11 +82,25 @@ textarea {
   padding: 10px;
   outline: none;
   resize: none;
+  color: black;
 }
 
 .tags-block {
   display: flex;
+}
+
+.tag-item{
+  display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  outline: none;
+  input{
+    width: 500px;
+    margin-bottom: 5px;
+    color: black;
+  }
 }
 
 .delete-button {
@@ -98,6 +112,7 @@ textarea {
   border-radius: 4px;
   outline: none;
   background-color: #ffffff;
+  cursor: pointer;
   span {
     font-family: Roboto, sans-serif;
     font-style: normal;
@@ -117,6 +132,7 @@ textarea {
   border-radius: 4px;
   outline: none;
   background-color: #ffffff;
+  cursor: pointer;
   span {
     font-family: Roboto, sans-serif;
     font-style: normal;
@@ -134,6 +150,7 @@ textarea {
   border: none;
   border-radius: 4px;
   margin-top: 21px;
+  cursor: pointer;
   span {
     font-family: Roboto, sans-serif;
     font-style: normal;

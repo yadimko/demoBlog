@@ -11,6 +11,7 @@ import SignUp from '../sign-up-page';
 import SignIn from '../sign-in-page';
 import EditProfile from '../edit-profile-page';
 import NewArticle from '../new-article-page';
+import EditArticle from '../edit-article-page/edit-article-page';
 
 
 
@@ -30,18 +31,16 @@ const App = () => {
             <PaginationPanel />
           </Route>
           <Route path="/hui" exact render={() => <LoadingIndicator />} />
-          {/*<Route path='/articles/:id' exact*/}
-          {/*			 render={({match, location, history}) => {*/}
-          {/*			 	const {id} = match.params;*/}
-          {/*			 	return <ArticlePage slugId={id}/>*/}
-          {/*			 }} />*/}
           <Switch>
-            <Route path="/articles/:id" children={<ArticlePage />} />
+            <Route path="/articles/:id" exact children={<ArticlePage />} />
+          </Switch>
+          <Switch>
+            <Route path="/articles/:id/edit" children={<EditArticle />} />
           </Switch>
           <Route path="/sign-up" render={() => <SignUp />} />
           <Route path="/sign-in" render={() => <SignIn />} />
           <Route path="/profile" render={() => <EditProfile />} />
-          <Route path="/new" render={() => <NewArticle />} />
+          <Route path="/new-article" render={() => <NewArticle />} />
         </section>
       </Router>
     </div>

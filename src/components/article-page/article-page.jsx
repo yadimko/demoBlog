@@ -1,19 +1,42 @@
 import * as dateFns from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import { Modal, Button, Space } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import * as actions from '../../store/getArticleOnClick/actions';
+import { Redirect, useParams, Link } from 'react-router-dom';
+import * as actions from '../../store/articleOnClick/actions';
 import LoadingIndicator from '../loading-indicator';
 import classes from './article-page.module.scss';
 import heart from '../articles-preview/heart.svg';
 
+import 'antd/dist/antd.css';
+
 let key = 1;
 
-const ArticlePage = ({ article, loadingEnd, GET_ARTICLE_ON_CLICK }) => {
+const ArticlePage = ({ article, loadingEnd, deleteStatus, token, username, signSuccess, GET_ARTICLE_ON_CLICK, DELETE_ARTICLE}) => {
   let { id } = useParams();
   useEffect(() => {
     GET_ARTICLE_ON_CLICK(id);
   }, [id]);
+
+  if (deleteStatus){
+    return <Redirect to='/' />
+  }
+  const deleteBtn = (slug) => {
+    DELETE_ARTICLE(slug, token)
+  }
+
+  function showDeleteConfirm() {
+    const { confirm } = Modal;
+    confirm({
+      title: 'Are you sure to delete this article?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        deleteBtn(article.slug)
+      },
+    });
+
+  }
 
   if (loadingEnd) {
     const tags =
@@ -26,6 +49,18 @@ const ArticlePage = ({ article, loadingEnd, GET_ARTICLE_ON_CLICK }) => {
             );
           })
         : null;
+
+    const path = `/articles/${article.slug}/edit`;
+    const btn = signSuccess && article.author.username === username ?
+      <>
+        <button type="button" className={classes['article-preview__btn-block_delete']} onClick={() => {showDeleteConfirm()}}>
+          <span>Delete</span>
+        </button>
+        <button type="button" className={classes['article-preview__btn-block_edit']}>
+          <Link to={path}><span>Edit</span></Link>
+        </button>
+      </> : null;
+
     const date = dateFns.format(new Date(article.createdAt), 'dd MMMM yyyy');
 
     return (
@@ -52,6 +87,9 @@ const ArticlePage = ({ article, loadingEnd, GET_ARTICLE_ON_CLICK }) => {
           </div>
           <div className={classes['article-preview__body-nickname']}>{article.author.username}</div>
           <div className={classes['article-preview__body-date']}>{date}</div>
+          <div className={classes['article-preview__btn-block']}>
+            {btn}
+          </div>
         </div>
       </div>
     );
@@ -63,7 +101,11 @@ const ArticlePage = ({ article, loadingEnd, GET_ARTICLE_ON_CLICK }) => {
 const mapStateToProps = (state) => {
   return {
     article: state.articleOnClickReducer.article,
+    deleteStatus: state.articleOnClickReducer.deleteStatus,
     loadingEnd: state.articleOnClickReducer.loadingEnd,
+    token: state.userSignControlReducer.user.token,
+    username: state.userSignControlReducer.user.username,
+    signSuccess: state.userSignControlReducer.signSuccess
   };
 };
 
