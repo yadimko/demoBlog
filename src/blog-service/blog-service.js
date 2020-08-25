@@ -19,55 +19,52 @@ export default class BlogService {
     return data;
   }
 
-  async signUpUser(body){
-    try{
+  async signUpUser(body) {
+    try {
       const response = await fetch(`${_rootUrl}users`, {
         method: 'POST',
         headers: new Headers({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         }),
-        body
+        body,
       });
       const data = await response.json();
       return data;
-    }
-    catch (err){
+    } catch (err) {
       console.log(err);
     }
   }
 
-  async signInUser(body){
-    try{
+  async signInUser(body) {
+    try {
       const response = await fetch(`${_rootUrl}users/login`, {
         method: 'POST',
         headers: new Headers({
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         }),
-        body
+        body,
       });
       const data = await response.json();
       return data;
-    }
-    catch (err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  async updateUser(body, token){
+  async updateUser(body, token) {
     try {
       const response = await fetch(`${_rootUrl}user`, {
         method: 'PUT',
         headers: new Headers({
           'Content-Type': 'application/json',
-           Authorization: `Token ${token}`,
+          Authorization: `Token ${token}`,
         }),
-        body
+        body,
       });
       const data = await response.json();
       return data;
-    }
-    catch (err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -79,13 +76,12 @@ export default class BlogService {
           'Content-Type': 'application/json',
           Authorization: `Token ${token}`,
         }),
-        body
+        body,
       });
       const data = await response.json();
       return data;
-    }
-    catch (err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -97,13 +93,12 @@ export default class BlogService {
           'Content-Type': 'application/json',
           Authorization: `Token ${token}`,
         }),
-        body
+        body,
       });
       const data = await response.json();
       return data;
-    }
-    catch (err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -118,9 +113,42 @@ export default class BlogService {
       });
       const data = await response.json();
       return data;
+    } catch (err) {
+      console.log(err);
     }
-    catch (err){
-      console.log(err)
+  }
+
+  async like(slug, token) {
+    try {
+      const response = await fetch(`${_rootUrl}articles/${slug}/favorite`, {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async dislike(slug, token) {
+    try {
+      const response = await fetch(`${_rootUrl}articles/${slug}/favorite`, {
+        method: 'DELETE',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
     }
   }
 }

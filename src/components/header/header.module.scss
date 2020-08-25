@@ -41,10 +41,9 @@
   justify-content: flex-end;
   align-items: center;
   margin-right: 22px;
-
 }
 
-.header-sign-in__button{
+.header-sign-in__button {
   width: 109px;
   height: 51px;
   font-family: Inter, sans-serif;
@@ -60,7 +59,7 @@
   }
 }
 
-.header-sign-up__button{
+.header-sign-up__button {
   width: 109px;
   height: 51px;
   font-family: Inter, sans-serif;
@@ -72,7 +71,7 @@
   border: 1px solid #52c41a;
   box-sizing: border-box;
   border-radius: 5px;
-  a{
+  a {
     color: #52c41a;
   }
   &:hover {
@@ -82,24 +81,24 @@
   }
 }
 
-.header-create-article__button{
+.header-create-article__button {
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
   background-color: white;
-  color: #52C41A;
+  color: #52c41a;
   border: 1px solid #52c41a;
   width: 112px;
   height: 31px;
   margin-right: 27px;
-  a{
+  a {
     color: #52c41a;
   }
 }
 
-.header-log-out__button{
+.header-log-out__button {
   width: 109px;
   height: 51px;
   font-family: Inter, sans-serif;
@@ -112,12 +111,12 @@
   color: rgba(0, 0, 0, 0.75);
   box-sizing: border-box;
   border-radius: 5px;
-  a{
+  a {
     color: rgba(0, 0, 0, 0.75);
   }
 }
 
-.header-user-info{
+.header-user-info {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -125,7 +124,7 @@
   margin-right: 27px;
 }
 
-.header-username{
+.header-username {
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -134,9 +133,9 @@
   margin-right: 13px;
 }
 
-.header-avatar{
-  a{
-    img{
+.header-avatar {
+  a {
+    img {
       max-height: 46px;
       max-width: 46px;
     }

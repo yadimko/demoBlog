@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import _ from 'lodash/fp';
 import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../../store/createArticle/actions';
 import classes from './new-article-page.module.scss';
 
-const NewArticle = ({token, signSuccess, articleAdd, CREATE_ARTICLE}) => {
-  const { register, handleSubmit, watch, errors } = useForm({});
+const NewArticle = ({ token, signSuccess, CREATE_ARTICLE }) => {
+  const { register, handleSubmit, errors } = useForm({});
   const [article, setArticle] = useState({
     article: {
       title: '',
@@ -16,10 +17,10 @@ const NewArticle = ({token, signSuccess, articleAdd, CREATE_ARTICLE}) => {
       tagList: [],
     },
   });
-  const [tag, setTag] = useState('')
+  const [tag, setTag] = useState('');
 
   const onSubmit = (el) => {
-    CREATE_ARTICLE(article, token)
+    CREATE_ARTICLE(article, token);
   };
 
   const onChangeTitleField = (el) => {
@@ -57,61 +58,100 @@ const NewArticle = ({token, signSuccess, articleAdd, CREATE_ARTICLE}) => {
     setArticle({
       article: {
         ...article.article,
-        tagList: [...article.article.tagList, el]
-      }
+        tagList: [...article.article.tagList, el],
+      },
     });
-    setTag('')
-  }
+    setTag('');
+  };
 
   const deleteTag = (tag) => {
     setArticle({
       article: {
         ...article.article,
-        tagList: [...article.article.tagList.filter(el => {
-          return el !== tag
-        })]
-      }
-    })
+        tagList: [
+          ...article.article.tagList.filter((el) => {
+            return el !== tag;
+          }),
+        ],
+      },
+    });
+  };
 
+  if (!signSuccess) {
+    return <Redirect to="/" />;
   }
 
-  if (!signSuccess){
-    return <Redirect to='/' />
-  }
-
-
-  const tagList = article.article.tagList.length > 0 ?
-    <>
+  const tagList =
+    article.article.tagList.length > 0 ? (
+      <>
+        <div className={classes['tag-item']}>
+          {article.article.tagList.map((el) => {
+            return (
+              <>
+                <input
+                  className={classes['new-article-tag__textfield']}
+                  type="text"
+                  size="40"
+                  placeholder="Tag"
+                  value={el}
+                />
+                <button
+                  className={classes['delete-button']}
+                  type="button"
+                  onClick={() => {
+                    deleteTag(el);
+                  }}
+                >
+                  <span>Delete</span>
+                </button>
+              </>
+            );
+          })}
+          <input
+            className={classes['new-article-tag__textfield']}
+            type="text"
+            size="40"
+            placeholder="Tag"
+            onChange={onChangeTagField}
+            value={tag}
+          />
+          <button className={classes['delete-button']} type="button">
+            <span>Delete</span>
+          </button>
+          <button
+            className={classes['add-button']}
+            type="button"
+            onClick={() => {
+              addTag(tag);
+            }}
+          >
+            <span>Add tag</span>
+          </button>
+        </div>
+      </>
+    ) : (
       <div className={classes['tag-item']}>
-        {article.article.tagList.map(el => {
-          return (
-            <>
-              <input className={classes['new-article-tag__textfield']} type="text" size="40" placeholder="Tag" value={el}/>
-              <button className={classes['delete-button']} type="button" onClick={() => {deleteTag(el)}}>
-                <span>Delete</span>
-              </button>
-            </>
-          )
-        })}
-        <input className={classes['new-article-tag__textfield']} type="text" size="40" placeholder="Tag" onChange={onChangeTagField} value={tag}/>
+        <input
+          className={classes['new-article-tag__textfield']}
+          type="text"
+          size="40"
+          placeholder="Tag"
+          onChange={onChangeTagField}
+        />
         <button className={classes['delete-button']} type="button">
           <span>Delete</span>
         </button>
-        <button className={classes['add-button']} type="button" onClick={() => {addTag(tag)}}>
+        <button
+          className={classes['add-button']}
+          type="button"
+          onClick={() => {
+            addTag(tag);
+          }}
+        >
           <span>Add tag</span>
         </button>
       </div>
-    </>
-    :
-    <div className={classes['tag-item']}>
-      <input className={classes['new-article-tag__textfield']} type="text" size="40" placeholder="Tag" onChange={onChangeTagField}/>
-      <button className={classes['delete-button']} type="button">
-        <span>Delete</span>
-      </button>
-      <button className={classes['add-button']} type="button" onClick={() => {addTag(tag)}}>
-        <span>Add tag</span>
-      </button>
-    </div>
+    );
 
   return (
     <div className={classes['new-article__wrapper']}>
@@ -191,7 +231,14 @@ const mapStateToProps = (state) => {
   return {
     articleAdd: state.createArticleReducer.articleAdd,
     token: state.userSignControlReducer.user.token,
-    signSuccess: state.userSignControlReducer.signSuccess
+    signSuccess: state.userSignControlReducer.signSuccess,
   };
 };
+
+NewArticle.propTypes = {
+  token: PropTypes.string.isRequired,
+  signSuccess: PropTypes.bool.isRequired,
+  CREATE_ARTICLE: PropTypes.func.isRequired,
+};
+
 export default connect(mapStateToProps, actions)(NewArticle);

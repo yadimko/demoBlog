@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   paginationReducer,
   articleOnClickReducer,
   userSignControlReducer,
-  createArticleReducer
+  createArticleReducer,
 });
 
 export default rootReducer;

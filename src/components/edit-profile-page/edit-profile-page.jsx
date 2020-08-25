@@ -1,38 +1,39 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import * as actions from '../../store/userSignControl/actions';
 import classes from './edit-profile-page.module.scss';
 
-const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
+const EditProfile = ({ errorsFromAPI, signSuccess, token, UPDATE_USER }) => {
   const [userLocal, setUserLocal] = useState({
     user: {
       username: '',
       email: '',
       password: '',
       bio: '',
-      image: ''
-    }
+      image: '',
+    },
   });
 
   const onSubmit = () => {
-    if (userLocal.user.username.length < 2){
+    if (userLocal.user.username.length < 2) {
       alert('Имя должно быть длинее');
-      return
+      return;
     }
-    if (userLocal.user.password.length < 8){
+    if (userLocal.user.password.length < 8) {
       alert('Пароль должен быть длинее');
-      return
+      return;
     }
     UPDATE_USER(userLocal, token);
-  }
+  };
 
   const onChangeUsernameField = (el) => {
     setUserLocal({
       user: {
         ...userLocal.user,
         username: el.target.value,
-      }
-    })
+      },
+    });
   };
 
   const onChangeBioField = (el) => {
@@ -40,8 +41,8 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
       user: {
         ...userLocal.user,
         bio: el.target.value,
-      }
-    })
+      },
+    });
   };
 
   const onChangeEMailField = (el) => {
@@ -49,8 +50,8 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
       user: {
         ...userLocal.user,
         email: el.target.value,
-      }
-    })
+      },
+    });
   };
 
   const onChangePasswordField = (el) => {
@@ -58,8 +59,8 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
       user: {
         ...userLocal.user,
         password: el.target.value,
-      }
-    })
+      },
+    });
   };
 
   const onChangeAvatarField = (el) => {
@@ -67,14 +68,14 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
       user: {
         ...userLocal.user,
         image: el.target.value,
-      }
-    })
+      },
+    });
   };
 
-  if (!signSuccess){
+  if (!signSuccess) {
     return (
-      <img src="https://s00.yaplakal.com/pics/pics_preview/1/6/5/13137561.jpg" alt="" style={{margin: 'auto'}}/>
-    )
+      <img src="https://s00.yaplakal.com/pics/pics_preview/1/6/5/13137561.jpg" alt="" style={{ margin: 'auto' }} />
+    );
   }
   return (
     <div className={classes['edit-profile__wrapper']}>
@@ -92,8 +93,11 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
             size="40"
             placeholder="Username"
             onChange={onChangeUsernameField}
-            required/>
-            {errorsFromAPI.username ? <p style={{ color: 'red', marginBottom: '2px'}}>{errorsFromAPI.username.toString()}</p> : null}
+            required
+          />
+          {errorsFromAPI.username ? (
+            <p style={{ color: 'red', marginBottom: '2px' }}>{errorsFromAPI.username.toString()}</p>
+          ) : null}
         </p>
         <p>
           <b>Bio</b>
@@ -105,7 +109,8 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
             size="40"
             onChange={onChangeBioField}
             required
-            placeholder="Bio" />
+            placeholder="Bio"
+          />
         </p>
         <p>
           <b>Email address</b>
@@ -117,8 +122,11 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
             value={userLocal.user.email}
             onChange={onChangeEMailField}
             placeholder="Email address"
-            required />
-          {errorsFromAPI.email ? <p style={{ color: 'red', marginBottom: '2px'}}>{errorsFromAPI.email.toString()}</p> : null}
+            required
+          />
+          {errorsFromAPI.email ? (
+            <p style={{ color: 'red', marginBottom: '2px' }}>{errorsFromAPI.email.toString()}</p>
+          ) : null}
         </p>
         <p>
           <b>New password</b>
@@ -130,17 +138,22 @@ const EditProfile = ({errorsFromAPI, signSuccess, token, UPDATE_USER}) => {
             size="40"
             value={userLocal.user.password}
             required
-            placeholder="Password" />
-          {errorsFromAPI.password ? <p style={{ color: 'red', marginBottom: '2px'}}>{errorsFromAPI.password.toString()}</p> : null}
+            placeholder="Password"
+          />
+          {errorsFromAPI.password ? (
+            <p style={{ color: 'red', marginBottom: '2px' }}>{errorsFromAPI.password.toString()}</p>
+          ) : null}
         </p>
         <p>
           <b>Avatar image (url)</b>
           <br />
-          <input className={classes['edit-profile__textfield']}
-                 type="url"
-                 size="40"
-                 onChange={onChangeAvatarField}
-                 placeholder="url" />
+          <input
+            className={classes['edit-profile__textfield']}
+            type="url"
+            size="40"
+            onChange={onChangeAvatarField}
+            placeholder="url"
+          />
         </p>
         <button className={classes['edit-profile__button']} type="button" onClick={onSubmit}>
           <span>Save</span>
@@ -156,5 +169,12 @@ const mapStateToProps = (state) => {
     token: state.userSignControlReducer.user.token,
     errorsFromAPI: state.userSignControlReducer.errorsFromAPI,
   };
+};
+
+EditProfile.propTypes = {
+  errorsFromAPI: PropTypes.arrayOf.isRequired,
+  signSuccess: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  UPDATE_USER: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, actions)(EditProfile);

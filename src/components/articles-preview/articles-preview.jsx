@@ -1,18 +1,35 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as dateFns from 'date-fns';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import classes from './articles-preview.module.scss';
 import * as actions from '../../store/getArticles/actions';
 import heart from './heart.svg';
+import love from './love_heart.svg';
+
+import BlogService from '../../blog-service/blog-service';
+const bs = new BlogService();
 
 let key = 1;
 
-const ArticlesPreview = ({ articles, GET_ARTICLES_FETCH }) => {
+const ArticlesPreview = ({ articles, signSuccess, token, GET_ARTICLES_FETCH }) => {
   useEffect(() => {
     GET_ARTICLES_FETCH();
   }, []);
+
+  function likeDislike(slug, like) {
+    if (!signSuccess) {
+      return null;
+    }
+    if (!like) {
+      bs.like(slug, token);
+    }
+    if (like) {
+      bs.dislike(slug, token);
+    }
+    return null;
+  }
 
   const articlesCollection = articles.map((art) => {
     const tags = art.tagList.map((tag) => {
@@ -33,8 +50,13 @@ const ArticlesPreview = ({ articles, GET_ARTICLES_FETCH }) => {
               <Link to={path}>{art.title}</Link>
             </span>
             <span className={classes['article-preview__body-title--heart']}>
-              <button type="button">
-                <img src={heart} alt="" />
+              <button
+                type="button"
+                onClick={() => {
+                  likeDislike(art.slug, art.favorited);
+                }}
+              >
+                <img src={art.favorited ? love : heart} alt="" />
               </button>
               <span>{art.favoritesCount}</span>
             </span>
@@ -59,7 +81,16 @@ const ArticlesPreview = ({ articles, GET_ARTICLES_FETCH }) => {
 const mapStateToProps = (state) => {
   return {
     articles: state.articlesReducer.articles,
+    token: state.userSignControlReducer.user.token,
+    signSuccess: state.userSignControlReducer.signSuccess,
   };
+};
+
+ArticlesPreview.propTypes = {
+  articles: PropTypes.objectOf(PropTypes.object).isRequired,
+  signSuccess: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  GET_ARTICLES_FETCH: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, actions)(withRouter(ArticlesPreview));

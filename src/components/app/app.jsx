@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import classes from './app.module.scss';
 
@@ -13,10 +13,7 @@ import EditProfile from '../edit-profile-page';
 import NewArticle from '../new-article-page';
 import EditArticle from '../edit-article-page/edit-article-page';
 
-
-
 const App = () => {
-
   return (
     <div className={classes['blog-wrapper']}>
       <Router>
@@ -30,7 +27,7 @@ const App = () => {
             <ArticlesPreview />
             <PaginationPanel />
           </Route>
-          <Route path="/hui" exact render={() => <LoadingIndicator />} />
+          <Route path="/load" exact render={() => <LoadingIndicator />} />
           <Switch>
             <Route path="/articles/:id" exact children={<ArticlePage />} />
           </Switch>

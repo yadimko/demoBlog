@@ -39,10 +39,10 @@
   grid-template:
     [start] 'nickname avatar' fit-content(33%) [row2]
     [row2] 'date avatar' 1fr [row3]
-    [row3] 'btn btn'[row-end] / 112px fit-content(50px);
+    [row3] 'btn btn' [row-end] / 112px fit-content(50px);
 }
 
-.article-preview__btn-block{
+.article-preview__btn-block {
   grid-area: btn;
   display: flex;
   justify-content: space-between;
@@ -52,28 +52,28 @@
 }
 
 .article-preview__btn-block_delete,
-.article-preview__btn-block_edit{
+.article-preview__btn-block_edit {
   height: 30px;
   width: 84px;
   cursor: pointer;
   outline: none;
-  span{
+  span {
     margin: auto;
   }
 }
 
-.article-preview__btn-block_edit{
+.article-preview__btn-block_edit {
   background-color: white;
   border: green solid 1px;
-  span{
+  span {
     color: green;
   }
 }
 
-.article-preview__btn-block_delete{
+.article-preview__btn-block_delete {
   background-color: white;
   border: red solid 1px;
-  span{
+  span {
     color: red;
   }
 }

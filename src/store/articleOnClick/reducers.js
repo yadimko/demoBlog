@@ -3,18 +3,18 @@ const initialStore = {
   error: false,
   article: {},
   deleteStatus: false,
-  editStatus: false
+  editStatus: false,
 };
 
 export default function articleOnClickReducer(state = initialStore, action) {
   switch (action.type) {
     case 'FETCH_ARTICLE_ON_CLICK_START_DOWNLOAD':
       return {
-      ...state,
-      loadingEnd: false,
-      editStatus: false,
-      deleteStatus: false,
-    };
+        ...state,
+        loadingEnd: false,
+        editStatus: false,
+        deleteStatus: false,
+      };
     case 'FETCH_ARTICLE_ON_CLICK_SUCCESS':
       return {
         ...state,
