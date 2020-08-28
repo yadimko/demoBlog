@@ -1,16 +1,28 @@
 const _rootUrl = 'https://conduit.productionready.io/api/';
 
 export default class BlogService {
-  async getArticlesFromAPI(num = 0) {
+
+  async getArticlesFromAPI(num = 0, token = '') {
+    const auth = token.length !== 0 ? `Token ${token}` : '';
     let numberOfPage;
     if (num === 1) {
       numberOfPage = 0;
     } else {
       numberOfPage = num * 5;
     }
-    const response = await fetch(`${_rootUrl}articles?limit=5&offset=${numberOfPage}`);
-    const data = await response.json();
-    return data;
+    try {
+      const response = await fetch(`${_rootUrl}articles?limit=5&offset=${numberOfPage}`, {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: auth,
+        }),
+      });
+      const data = await response.json();
+      return data;
+    }catch (err) {
+      console.log(err)
+    }
   }
 
   async getArticleOnClick(slug) {

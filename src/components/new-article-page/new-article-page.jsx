@@ -18,9 +18,15 @@ const NewArticle = ({ token, signSuccess, CREATE_ARTICLE }) => {
     },
   });
   const [tag, setTag] = useState('');
+  const [redirect, setRedirect] = useState(false);
+
+  if (redirect){
+    return <Redirect to='/' />
+  }
 
   const onSubmit = (el) => {
     CREATE_ARTICLE(article, token);
+    setRedirect(true);
   };
 
   const onChangeTitleField = (el) => {

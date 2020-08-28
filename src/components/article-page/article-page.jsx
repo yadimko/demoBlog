@@ -8,7 +8,7 @@ import { Redirect, useParams, Link } from 'react-router-dom';
 import * as actions from '../../store/articleOnClick/actions';
 import LoadingIndicator from '../loading-indicator';
 import classes from './article-page.module.scss';
-import heart from '../articles-preview/heart.svg';
+import heart from '../../img/heart.svg';
 
 import 'antd/dist/antd.css';
 

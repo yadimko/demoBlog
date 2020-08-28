@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../store/userSignControl/actions';
 import classes from './header.module.scss';
-import avatar from './default_avatar.png';
+import avatar from '../../img/default_avatar.png';
 
 const Header = ({ signSuccess, user, LOG_OUT }) => {
   const userAvatar = !user.image ? <img src={avatar} alt="default avatar" /> : <img src={user.image} alt="avatar" />;

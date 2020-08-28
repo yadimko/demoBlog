@@ -8,7 +8,7 @@ export const RESPONSE_SUCCESS = (obj) => ({ type: 'RESPONSE_SUCCESS', payload: o
 
 export const RESPONSE_HAS_ERRORS = (obj) => ({ type: 'RESPONSE_HAS_ERRORS', payload: obj });
 
-export const LOG_OUT = () => ({ type: 'LOG_OUT' });
+export const LOG_OUT = () => {localStorage.clear(); return { type: 'LOG_OUT' }};
 
 export const SIGN_UP_USER = (body) => async (dispatch) => {
   const data = JSON.stringify(body);
@@ -19,6 +19,8 @@ export const SIGN_UP_USER = (body) => async (dispatch) => {
     }
     if ('user' in response) {
       dispatch(RESPONSE_SUCCESS(response.user));
+      localStorage.setItem('email', body.user.email);
+      localStorage.setItem('password', body.user.password);
     }
   } catch (err) {
     dispatch(RESPONSE_FAILURE());
@@ -34,6 +36,8 @@ export const SIGN_IN_USER = (body) => async (dispatch) => {
     }
     if ('user' in response) {
       dispatch(RESPONSE_SUCCESS(response.user));
+      localStorage.setItem('email', body.user.email);
+      localStorage.setItem('password', body.user.password);
     }
   } catch (err) {
     dispatch(RESPONSE_FAILURE());
@@ -49,6 +53,7 @@ export const UPDATE_USER = (body, token) => async (dispatch) => {
     }
     if ('user' in response) {
       dispatch(RESPONSE_SUCCESS(response.user));
+      dispatch(LOG_OUT());
     }
   } catch (err) {
     dispatch(RESPONSE_FAILURE());

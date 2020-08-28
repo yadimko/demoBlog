@@ -1,5 +1,7 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import * as actions from '../../store/userSignControl/actions';
 import classes from './app.module.scss';
 
 import Header from '../header';
@@ -13,7 +15,30 @@ import EditProfile from '../edit-profile-page';
 import NewArticle from '../new-article-page';
 import EditArticle from '../edit-article-page/edit-article-page';
 
-const App = () => {
+const App = ({ SIGN_IN_USER, signSuccess }) => {
+  useEffect(() => {
+    if (localStorage.length > 1){
+      const user = {
+        user: {
+          email: localStorage.email,
+          password: localStorage.password,
+        },
+      }
+      SIGN_IN_USER(user)
+    }
+  }, [])
+
+  const PrivateRoute = ({ component: Component, signSuccess, ...rest }) => (
+    <Route
+      {...rest}
+      render={props => (
+        signSuccess === true)
+        ? <Redirect to="/profile" />
+        : <Component {...props} />
+        }
+    />
+  );
+
   return (
     <div className={classes['blog-wrapper']}>
       <Router>
@@ -36,7 +61,10 @@ const App = () => {
           </Switch>
           <Route path="/sign-up" render={() => <SignUp />} />
           <Route path="/sign-in" render={() => <SignIn />} />
-          <Route path="/profile" render={() => <EditProfile />} />
+          <PrivateRoute signSuccess={signSuccess} path='/profile' >
+            <EditProfile/>
+          </PrivateRoute>
+          {/*<Route path="/profile" render={() => <EditProfile />} />*/}
           <Route path="/new-article" render={() => <NewArticle />} />
         </section>
       </Router>
@@ -44,4 +72,13 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    token: state.userSignControlReducer.token,
+    signSuccess: state.userSignControlReducer.signSuccess,
+    email: state.userSignControlReducer.user.email,
+    password: state.userSignControlReducer.user.password,
+  }
+}
+
+export default connect(mapStateToProps, actions)(App);

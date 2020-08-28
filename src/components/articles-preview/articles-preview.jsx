@@ -1,34 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as dateFns from 'date-fns';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classes from './articles-preview.module.scss';
 import * as actions from '../../store/getArticles/actions';
-import heart from './heart.svg';
-import love from './love_heart.svg';
-
-import BlogService from '../../blog-service/blog-service';
-const bs = new BlogService();
+import heart from '../../img/heart.svg';
+import love from '../../img/love_heart.svg';
 
 let key = 1;
 
-const ArticlesPreview = ({ articles, signSuccess, token, GET_ARTICLES_FETCH }) => {
+const ArticlesPreview = ({ articles, signSuccess, error, token, LIKE, GET_ARTICLES_FETCH }) => {
   useEffect(() => {
-    GET_ARTICLES_FETCH();
+    GET_ARTICLES_FETCH(1, token);
   }, []);
 
-  function likeDislike(slug, like) {
-    if (!signSuccess) {
-      return null;
+  const [btnRedirect, setBtnRedirect] = useState(false)
+
+  if (error){
+    return <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: 'auto'}}>
+      <img src="http://www.ochevidets.ru/userfiles/2017/11/25/f8be128f44.jpg" alt=""/>
+      <h1 style={{color: 'red', margin: 'auto', paddingBottom: '25px'}}>Server ERROR. Мы уже исправляем проблему</h1>
+    </div>
+  }
+
+  if (btnRedirect){
+    return <Redirect to='/sign-in'/>
+  }
+
+  const clickOnHeart = (slug, token) => {
+    if (!signSuccess){
+      setBtnRedirect(true)
     }
-    if (!like) {
-      bs.like(slug, token);
-    }
-    if (like) {
-      bs.dislike(slug, token);
-    }
-    return null;
+    LIKE(slug, token);
   }
 
   const articlesCollection = articles.map((art) => {
@@ -52,9 +56,7 @@ const ArticlesPreview = ({ articles, signSuccess, token, GET_ARTICLES_FETCH }) =
             <span className={classes['article-preview__body-title--heart']}>
               <button
                 type="button"
-                onClick={() => {
-                  likeDislike(art.slug, art.favorited);
-                }}
+                onClick={() => {clickOnHeart(art.slug, token)}}
               >
                 <img src={art.favorited ? love : heart} alt="" />
               </button>
@@ -81,6 +83,7 @@ const ArticlesPreview = ({ articles, signSuccess, token, GET_ARTICLES_FETCH }) =
 const mapStateToProps = (state) => {
   return {
     articles: state.articlesReducer.articles,
+    error: state.articlesReducer.error,
     token: state.userSignControlReducer.user.token,
     signSuccess: state.userSignControlReducer.signSuccess,
   };
@@ -88,6 +91,7 @@ const mapStateToProps = (state) => {
 
 ArticlesPreview.propTypes = {
   articles: PropTypes.objectOf(PropTypes.object).isRequired,
+  error: PropTypes.bool.isRequired,
   signSuccess: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
   GET_ARTICLES_FETCH: PropTypes.func.isRequired,

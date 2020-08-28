@@ -8,14 +8,14 @@ import 'antd/dist/antd.css';
 const style = {
   margin: 'auto',
 };
-const PaginationPanel = ({ GET_ARTICLES_FETCH }) => {
+const PaginationPanel = ({ GET_ARTICLES_FETCH, token }) => {
   const onChange = (el) => {
-    GET_ARTICLES_FETCH(el);
+    GET_ARTICLES_FETCH(el, token);
   };
 
   return (
     <div className="pagination-wrapper" style={style}>
-      <Pagination defaultCurrent={1} total={50} pageSize={5} onChange={onChange} />
+      <Pagination defaultCurrent={1} total={500} pageSize={5} onChange={onChange} showSizeChanger={false}/>
     </div>
   );
 };
@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
   return {
     currentPage: state.paginationReducer.currentPage,
     totalPage: state.paginationReducer.totalPage,
+    token: state.userSignControlReducer.user.token
   };
 };
 
